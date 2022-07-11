@@ -1,0 +1,19 @@
+1)Запрос на сервер
+curl 'http://162.55.220.72:5005/terminal-hw-request'
+
+curl 'http://162.55.220.72:5005/get_method?name=igor&age=29'
+
+
+2)Скрипт
+
+#!/bin/bash
+mkdir result
+cd ./result/
+mkdir folder_1 folder_2 folder_3
+cd ./folder_2/
+touch file_1.txt file_2.txt file_3.txt file_4.json file_5.json
+mkdir d_4 d_5 d_6
+ls -la
+cd ..
+mv ./folder_2/file_3.txt ./folder_1/file_3.txt
+mv ./folder_2/file_4.json ./folder_3/file_4.json
