@@ -1,0 +1,7 @@
+"Summary": "Короткое описание проблемы",
+"Project": "Название тестируемого проекта",
+"Component": "Название части или функции тестируемого продукта",
+"Version": "Версия на которой была найдена ошибка",
+"Severity": "Blocker, Critical, Major, Minor, Trivial",
+"Priority": "High, Medium, Low",
+"Status": "Статус бага"
