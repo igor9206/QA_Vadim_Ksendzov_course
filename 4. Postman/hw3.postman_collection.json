@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "a7c01a68-c217-4aa1-ab81-0b45070297e3",
+		"name": "postman_hw3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"let token = jsonData.token;\r",
+							"\r",
+							"pm.environment.set(\"token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://162.55.220.72:5007/login?login=Igor&password=123456",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5007",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "Igor"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const structure = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"required\": [\r",
+							"        \"start_qa_salary\",\r",
+							"        \"qa_salary_after_6_months\",\r",
+							"        \"qa_salary_after_12_months\",\r",
+							"        \"person\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"start_qa_salary\": {\r",
+							"            \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"qa_salary_after_6_months\": {\r",
+							"            \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"qa_salary_after_12_months\": {\r",
+							"            \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"person\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"required\": [\r",
+							"                \"u_name\",\r",
+							"                \"u_age\",\r",
+							"                \"u_salary_1.5_year\"\r",
+							"            ],\r",
+							"            \"properties\": {\r",
+							"                \"u_name\": {\r",
+							"                    \"type\": \"array\"\r",
+							"                },\r",
+							"                \"u_age\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"u_salary_1.5_year\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                }\r",
+							"            }\r",
+							"        }\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test(\"Check structure\", function () {\r",
+							"    pm.response.to.have.jsonSchema(structure)\r",
+							"});\r",
+							"\r",
+							"let respData = pm.response.json();\r",
+							"let reqData = JSON.parse(request.data)\r",
+							"\r",
+							"pm.test(\"Check coefficient *2\", function () {\r",
+							"    pm.expect(reqData.salary*2).to.have.eql(respData.qa_salary_after_6_months);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check coefficient *2.9\", function () {\r",
+							"    pm.expect(reqData.salary*2.9).to.have.eql(respData.qa_salary_after_12_months);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check coefficient *4\", function () {\r",
+							"    pm.expect(reqData.salary*4).to.have.eql(respData.person.u_salary_1_5_year);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"u_salary_1.5_year\", respData.person.u_salary_1_5_year);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"age\": 29,\r\n\t\"salary\": 2000,\r\n\t\"name\": \"Igor\",\r\n    \"auth_token\": \"{{token}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5007/user_info",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5007",
+					"path": [
+						"user_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 1) Статус код 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// 2) Проверка структуры json в ответе.\r",
+							"\r",
+							"\r",
+							"// 3) В ответе указаны коэффициенты умножения salary, напишите тесты по проверке правильности результата перемножения на коэффициент.\r",
+							"let responseData = pm.response.json()\r",
+							"let requestData = request.data;\r",
+							"\r",
+							"pm.test(\"Check coefficient *2\", function () {\r",
+							"    pm.expect(requestData.salary*2).to.have.eql(+responseData.salary[1])\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check coefficient *3\", function () {\r",
+							"    pm.expect(requestData.salary*3).to.have.eql(+responseData.salary[2])\r",
+							"});\r",
+							"\r",
+							"// 4) проверить, что 2-й элемент массива salary больше 1-го и 0-го\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "29",
+							"type": "default"
+						},
+						{
+							"key": "salary",
+							"value": "2000",
+							"type": "default"
+						},
+						{
+							"key": "name",
+							"value": "Igor",
+							"type": "default"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/new_data",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"new_data"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
